@@ -1,0 +1,61 @@
+#################################
+Procedure: Applying [PC+COOH]- Rule
+#################################
+if find_in_fragements("[M-CH3]-") then
+    if find_in_fragements("[SN1 FA-H]") and find_in_fragements("[SN2 FA-H]") then
+        if intensity("[SN1 FA-H]")/intensity("[SN2 FA-H]") < 0.9:
+            return fatty_acyl_position_level (PC(m1:n1/m2:n2))
+        else
+            return fatty_acyl_level (PC(m1:n1_m2:n2))
+        end if
+    else then
+        return lipid_species_level (PC(m1+m2:n1+n2))
+    end if
+else
+    return remove_lipid_species
+end if
+
+#################################
+Procedure: Applying [LPE+H]+ Rule
+#################################
+if find_in_fragements("[M-C2H8NO4P+H]+") then
+    return lipid_species_level (LPE(m1:n1))
+else
+    return remove_lipid_species
+end if
+
+#################################
+Procedure: Applying [SM+COOH]- Rule
+#################################
+if find_in_fragements("[M-CH3]-") in fragments then
+    return lipid_species_level (SM(m1+m2:n1+n2))
+else
+    return remove_lipid_species
+end if
+
+#################################
+Procedure: Applying [TG+NH4]+ Rule
+#################################
+if find_in_fragements("[M-SN1 FA Ketene+H]+/[M-SN2 FA Ketene+H]+/[M-SN3 FA Ketene+H]+") then
+  return fatty_acyl_position_level (TG(m1:n1/m2:n2/m3:n3))
+else find_in_fragements("[M-SN1 FA Ketene+H]+/[M-SN2 FA Ketene+H]+") and find_in_fragements("[M-SN3 FA Ketene+H]+") then
+  return fatty_acyl_level (TG(m1:n1_m2:n2_m3:n3))
+else find_in_fragements("[M-SN1 FA Ketene+H]+/[M-SN3 FA Ketene+H]+") and find_in_fragments("[M-SN2 FA Ketene+H]+") then
+  return fatty_acyl_level (TG(m1:n1_m2:n2_m3:n3))
+else find_in_fragements("[M-SN2 FA Ketene+H]+/[M-SN3 FA Ketene+H]+") and find_in_fragments("[M-SN1 FA Ketene+H]+") then
+  return fatty_acyl_level (TG(m1:n1_m2:n2_m3:n3))
+else 
+  if find_in_fragments("[M-SN1 FA Ketene+H]+") then
+    if find_in_fragments("[M-SN2 FA Ketene+H]+") then
+      if find_in_fragments("[M-SN3 FA Ketene+H]+") then
+        return fatty_acyl_level (TG(m1:n1_m2:n2_m3:n3))
+      else
+        return lipid_species_level (TG(m1+m2+m3:n2+n2+n3))
+      end if
+    else
+      return lipid_species_level (TG(m1+m2+m3:n2+n2+n3))
+    end if
+  else
+    return remove_lipid_species
+  end if
+end if
