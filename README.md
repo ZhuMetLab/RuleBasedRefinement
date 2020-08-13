@@ -1,3 +1,5 @@
+# Rule-based refinement
+
 The **rule-based refinement** considered the structure details of lipids with experimentally curated fragmentation rules, efficiently addressed the challenge of over-reporting structure details, reducing redundancy, and improving the accuracy of annotation.
 
 The LipidIMMS Analyzer webserver is free accessible at [here](http://imms.zhulab.cn/LipidIMMS/).
